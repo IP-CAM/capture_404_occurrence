@@ -1,0 +1,25 @@
+Capture 404 Occurrence for opencart is a well thought out and excel­lently made mod­ule that allows to capture 404 occurrence, store urls that occurs 404 and displays all 404 urls and No of occurrence for particular urls.
+
+Key Features
+1. Capturing 404 occurrence
+2. Store all urls that occurs 404
+3. VQMOD based
+4. To viewing Go to Admin->Tool->Capture 404 Occurrence
+
+ Installation Instructions
+
+
+1. Copy folder upload to root path
+2. Copy and paste files to your opencart directory
+3. Add as many modules as you like!
+4. Run path/vqmod/install to install VQMOD (if it is not installed before ) 
+5. Run path/vqmod/install/capture_404_occurrence.php to install database for this module.
+6.Thats All!
+
+If you have permission problem *
+
+Login to admin panel > Go to system > User > User groups  >  Click on edit of top administrator > then select all to access permission and modify permission.
+
+It will work fine now.
+ 
+Enjoy ! 

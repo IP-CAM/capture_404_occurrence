@@ -1,0 +1,72 @@
+<modification>
+        <id>Capture 404 occurrence</id>
+        <version>0.1</version>
+        <vqmver>2.5.1</vqmver>
+        <author>OST</author>
+        <file name="catalog/controller/error/not_found.php">
+                <operation>
+                        <search position="after"><![CDATA[$this->load->language('error/not_found');]]></search>
+                        <add><![CDATA[
+          //djb log the error
+			$total='';
+			if(isset($_SERVER['REQUEST_URI']))
+			{
+				if ($this->request->server['HTTPS'])
+				$request_uri ='https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+				else $request_uri ='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			}
+			else $request_uri='';
+			$q="select occurrence from ".DB_PREFIX."capture_404_occurrence where request_uri='".$request_uri."'";
+			$query=$this->db->query($q);
+			if(isset($query->row['occurrence']))
+			$total=$query->row['occurrence'];
+			if($total)
+			{			
+				$total+=1;
+				$q="update ".DB_PREFIX."capture_404_occurrence set occurrence=$total where request_uri='".$request_uri."'";
+			}
+			else
+			{
+				$q="insert into ".DB_PREFIX."capture_404_occurrence values('','$request_uri','1')";	
+			}
+			$this->db->query($q);			
+                        ]]></add>
+                </operation>
+        </file>
+        <file name="admin/controller/common/menu.php">
+		<operation>
+			<search position="before" offset=""><![CDATA[
+				$this->load->language('common/menu');
+				]]>
+			</search>
+			<add><![CDATA[
+				$this->load->language('tool/capture_404_occurrence');
+				$data['capture_404_occurrence_heading_title'] = $this->language->get('heading_title');
+				]]>
+			</add>
+		</operation>
+		<operation>
+			<search position="before" offset=""><![CDATA[
+				$data['home'] = $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], 'SSL');
+				]]>
+			</search>
+			<add><![CDATA[
+				$data['capture_404_occurrence'] = $this->url->link('tool/capture_404_occurrence', 'token=' . $this->session->data['token'], 'SSL');
+				]]>
+			</add>
+		</operation>
+	</file>
+
+	<file name="admin/view/template/common/menu.tpl">
+		<operation>
+			<search position="after" offset=""><![CDATA[
+					<li><a href="<?php echo $error_log; ?>"><?php echo $text_error_log; ?></a></li>
+				]]>
+			</search>
+			<add><![CDATA[
+				<li><a href="<?php echo $capture_404_occurrence; ?>"><span><?php echo $capture_404_occurrence_heading_title; ?></span></a></li>
+				]]>
+		    </add>
+		</operation>
+	</file>
+</modification>
